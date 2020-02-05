@@ -18,6 +18,10 @@ func showItem(w http.ResponseWriter, r *http.Request) {
 }
 
 func addItem(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "Method Not Allowed", 405)
+		return
+	}
 	w.Write([]byte("Add an item to the inventory(test)..."))
 }
 
