@@ -1,0 +1,25 @@
+{{define "base"}}
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>{{template "title" .}} - Ships Inventory</title>
+</head>
+
+<body>
+    <header>
+        <h1><a href="/">Ships Inventory</a></h1>
+    </header>
+    <nav>
+        <a href="/">Home</a>
+    </nav>
+    <main>
+        {{template "main" .}}
+    </main>
+
+    {{template "footer" .}}
+</body>
+
+</html>
+{{end}}
