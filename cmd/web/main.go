@@ -7,12 +7,15 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/gbadali/shipsInventory/pkg/models/mysql"
+
 	_ "github.com/go-sql-driver/mysql"
 )
 
 type application struct {
 	errorLog *log.Logger
 	infoLog  *log.Logger
+	inventory    *mysql.InventoryModel
 }
 
 func main() {
@@ -35,6 +38,7 @@ func main() {
 	app := &application{
 		errorLog: errorLog,
 		infoLog:  infoLog,
+		inventory: &&mysql.InventoryModel{DB, db},
 	}
 
 	srv := &http.Server{
