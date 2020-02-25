@@ -3,7 +3,6 @@ package mysql
 import (
 	"database/sql"
 	"errors"
-	"fmt"
 
 	"github.com/gbadali/shipsInventory/pkg/models"
 )
@@ -31,8 +30,8 @@ func (m *InventoryModel) Insert(itemName, partNum, description, site, space, dra
 }
 
 func (m *InventoryModel) Get(id int) (*models.Item, error) {
-	fmt.Println("trying to get item with id ", id)
-	stmt := `SELECT id, itemName, description, created, lastInventory, numOnHand, partNum, site, space, drawer FROM inventory
+	stmt := `SELECT id, itemName, description, created, lastInventory, numOnHand, 
+		partNum, site, space, drawer FROM inventory
 		WHERE removed is NULL AND id = ?`
 
 	row := m.DB.QueryRow(stmt, id)
@@ -52,5 +51,34 @@ func (m *InventoryModel) Get(id int) (*models.Item, error) {
 }
 
 func (m *InventoryModel) Oldest() ([]*models.Item, error) {
-	return nil, nil
+	stmt := `SELECT id, itemName, description, created, lastInventory, 
+		numOnHand, partNum, site, space, drawer FROM inventory
+		WHERE removed is NULL ORDER BY lastInventory ASC LIMIT 10`
+
+	rows, err := m.DB.Query(stmt)
+	if err != nil {
+		return nil, err
+	}
+
+	defer rows.Close()
+
+	items := []*models.Item{}
+
+	for rows.Next() {
+		i := &models.Item{}
+		err = rows.Scan(&i.ID, &i.ItemName, &i.Description, &i.Created, &i.LastInventory,
+			&i.NumOnHand, &i.PartNum, &i.Site, &i.Space, &i.Drawer)
+		if err != nil {
+			return nil, err
+		}
+
+		items = append(items, i)
+	}
+
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return items, nil
+
 }

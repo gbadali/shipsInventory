@@ -3,7 +3,6 @@ package main
 import (
 	"errors"
 	"fmt"
-	"html/template"
 	"net/http"
 	"strconv"
 
@@ -16,24 +15,34 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	files := []string{
-		"./ui/html/home.page.tmpl",
-		"./ui/html/base.layout.tmpl",
-		"./ui/html/footer.partial.tmpl",
-	}
-
-	ts, err := template.ParseFiles(files...)
+	i, err := app.inventory.Oldest()
 	if err != nil {
 		app.serverError(w, err)
-		http.Error(w, "Internal Server Error", 500)
 		return
 	}
 
-	err = ts.Execute(w, nil)
-	if err != nil {
-		app.serverError(w, err)
-		http.Error(w, "Internal Server Error", 500)
+	for _, item := range i {
+		fmt.Fprintf(w, "%v\n", item)
 	}
+
+	// files := []string{
+	// 	"./ui/html/home.page.tmpl",
+	// 	"./ui/html/base.layout.tmpl",
+	// 	"./ui/html/footer.partial.tmpl",
+	// }
+
+	// ts, err := template.ParseFiles(files...)
+	// if err != nil {
+	// 	app.serverError(w, err)
+	// 	http.Error(w, "Internal Server Error", 500)
+	// 	return
+	// }
+
+	// err = ts.Execute(w, nil)
+	// if err != nil {
+	// 	app.serverError(w, err)
+	// 	http.Error(w, "Internal Server Error", 500)
+	// }
 }
 
 func (app *application) showItem(w http.ResponseWriter, r *http.Request) {
