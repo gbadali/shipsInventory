@@ -1,10 +1,13 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"html/template"
 	"net/http"
 	"strconv"
+
+	"github.com/gbadali/shipsInventory/pkg/models"
 )
 
 func (app *application) home(w http.ResponseWriter, r *http.Request) {
@@ -40,7 +43,17 @@ func (app *application) showItem(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Fprintf(w, "Dispaly a specific item with ID %d...", id)
+	i, err := app.inventory.Get(id)
+	if err != nil {
+		if errors.Is(err, models.ErrNoRecord) {
+			app.notFound(w)
+		} else {
+			app.serverError(w, err)
+		}
+		return
+	}
+
+	fmt.Fprintf(w, "%v", i)
 }
 
 func (app *application) addItem(w http.ResponseWriter, r *http.Request) {
@@ -50,5 +63,20 @@ func (app *application) addItem(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.Write([]byte("Add an item to the inventory..."))
+	// Dummy data
+	itemName := "O-Ring"
+	description := "A purple O-Ring"
+	numOnHand := 10
+	partNum := "209-9088"
+	site := "RL"
+	space := "AMR"
+	drawer := "C-06"
+
+	id, err := app.inventory.Insert(itemName, partNum, description, site, space, drawer, numOnHand)
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+
+	http.Redirect(w, r, fmt.Sprintf("/item?id=%d", id), http.StatusSeeOther)
 }

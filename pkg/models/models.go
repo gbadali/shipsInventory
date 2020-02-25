@@ -15,6 +15,7 @@ type Item struct {
 	LastInventory time.Time
 	Created       time.Time
 	Removed       time.Time
+	PartNum       string
 	Site          string
 	Space         string
 	Drawer        string

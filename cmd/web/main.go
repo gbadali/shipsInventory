@@ -13,9 +13,9 @@ import (
 )
 
 type application struct {
-	errorLog *log.Logger
-	infoLog  *log.Logger
-	inventory    *mysql.InventoryModel
+	errorLog  *log.Logger
+	infoLog   *log.Logger
+	inventory *mysql.InventoryModel
 }
 
 func main() {
@@ -36,9 +36,9 @@ func main() {
 	defer db.Close()
 
 	app := &application{
-		errorLog: errorLog,
-		infoLog:  infoLog,
-		inventory: &&mysql.InventoryModel{DB, db},
+		errorLog:  errorLog,
+		infoLog:   infoLog,
+		inventory: &mysql.InventoryModel{DB: db},
 	}
 
 	srv := &http.Server{
