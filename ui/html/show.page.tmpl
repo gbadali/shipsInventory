@@ -1,0 +1,20 @@
+{{template "base" .}}
+
+<!-- TODO: Change this to Manufacturer - PN -->
+{{define "title"}} Item #{{.Item.ID}}{{end}}
+
+{{define "main"}}
+<div class='item'>
+    <div class="metadata">
+        <strong>{{.Item.ItemName}}</strong>
+        <span>#{{.Item.ID}}</span>
+    </div>
+    <pre><code>{{.Item.Description}}</code></pre>
+    <div class="location">
+        <b>Site:</b> {{.Item.Site}} <b>Space:</b> {{.Item.Space}} <b>Drawer:</b> {{.Item.Drawer}}
+    </div>
+    <div class="metadata">
+        <time>Last Inventoried: {{.Item.LastInventory}}</time>
+    </div>
+</div>
+{{end}}
