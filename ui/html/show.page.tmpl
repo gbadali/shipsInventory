@@ -4,17 +4,19 @@
 {{define "title"}} Item #{{.Item.ID}}{{end}}
 
 {{define "main"}}
+{{with .Item}}
 <div class='item'>
     <div class="metadata">
-        <strong>{{.Item.ItemName}}</strong>
-        <span>#{{.Item.ID}}</span>
+        <strong>{{.ItemName}}</strong>
+        <span>#{{.ID}}</span>
     </div>
-    <pre><code>{{.Item.Description}}</code></pre>
+    <pre><code>{{.Description}}</code></pre>
     <div class="location">
-        <b>Site:</b> {{.Item.Site}} <b>Space:</b> {{.Item.Space}} <b>Drawer:</b> {{.Item.Drawer}}
+        <b>Site:</b> {{.Site}} <b>Space:</b> {{.Space}} <b>Drawer:</b> {{.Drawer}}
     </div>
     <div class="metadata">
-        <time>Last Inventoried: {{.Item.LastInventory}}</time>
+        <time>Last Inventoried: {{.LastInventory}}</time>
     </div>
 </div>
+{{end}}
 {{end}}

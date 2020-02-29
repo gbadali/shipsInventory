@@ -7,5 +7,6 @@ import (
 // TemplateData is here because we can only pass one struct into
 // the template so we agregate it here.
 type templateData struct {
-	Item *models.Item
+	Item  *models.Item
+	Items []*models.Item
 }
