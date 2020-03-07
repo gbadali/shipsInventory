@@ -15,7 +15,7 @@
         <b>Site:</b> {{.Site}} <b>Space:</b> {{.Space}} <b>Drawer:</b> {{.Drawer}}
     </div>
     <div class="metadata">
-        <time>Last Inventoried: {{.LastInventory}}</time>
+        <time><b>Last Inventory: </b>{{humanDate .LastInventory}}</time>
     </div>
 </div>
 {{end}}

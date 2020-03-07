@@ -15,7 +15,7 @@
     <tr>
         <td><a href='/item?id={{.ID}}'>{{.PartNum}}</a></td>
         <td><a href='/item?id={{.ID}}'>{{.ItemName}}</a></td>
-        <td>{{.LastInventory}}</td>
+        <td>{{humanDate .LastInventory}}</td>
     </tr>
     {{end}}
 </table>
