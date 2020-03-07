@@ -10,8 +10,9 @@ import (
 // TemplateData is here because we can only pass one struct into
 // the template so we agregate it here.
 type templateData struct {
-	Item  *models.Item
-	Items []*models.Item
+	CurrentYear int
+	Item        *models.Item
+	Items       []*models.Item
 }
 
 func newTemplateCache(dir string) (map[string]*template.Template, error) {
