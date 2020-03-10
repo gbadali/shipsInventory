@@ -10,11 +10,6 @@ import (
 )
 
 func (app *application) home(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path != "/" {
-		app.notFound(w)
-		return
-	}
-
 	i, err := app.inventory.Oldest()
 	if err != nil {
 		app.serverError(w, err)
@@ -27,7 +22,7 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) showItem(w http.ResponseWriter, r *http.Request) {
-	id, err := strconv.Atoi(r.URL.Query().Get("id"))
+	id, err := strconv.Atoi(r.URL.Query().Get(":id"))
 	if err != nil || id < 1 {
 		app.notFound(w)
 		return
@@ -48,12 +43,10 @@ func (app *application) showItem(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-func (app *application) addItem(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodPost {
-		w.Header().Set("Allow", http.MethodPost)
-		app.clientError(w, http.StatusMethodNotAllowed)
-		return
-	}
+func (app *application) newItemForm(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("Create a new snippet..."))
+}
+func (app *application) newItem(w http.ResponseWriter, r *http.Request) {
 
 	// Dummy data
 	itemName := "O-Ring"
@@ -70,5 +63,5 @@ func (app *application) addItem(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	http.Redirect(w, r, fmt.Sprintf("/item?id=%d", id), http.StatusSeeOther)
+	http.Redirect(w, r, fmt.Sprintf("/item/:%d", id), http.StatusSeeOther)
 }

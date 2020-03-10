@@ -13,8 +13,8 @@
     </tr>
     {{range .Items}}
     <tr>
-        <td><a href='/item?id={{.ID}}'>{{.PartNum}}</a></td>
-        <td><a href='/item?id={{.ID}}'>{{.ItemName}}</a></td>
+        <td><a href='/item/{{.ID}}'>{{.PartNum}}</a></td>
+        <td><a href='/item/{{.ID}}'>{{.ItemName}}</a></td>
         <td>{{humanDate .LastInventory}}</td>
     </tr>
     {{end}}
