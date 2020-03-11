@@ -1,0 +1,36 @@
+{{template "base" .}}
+
+{{define "title"}}Add a New Item{{end}}
+
+{{define "main"}}
+<form action="/item/new" method="POST">
+    <fieldset>
+        <div>
+            <fieldset>
+                <input placeholder="Part Name" type="text" name="itemName">
+            </fieldset>
+            <fieldset>
+                <input placeholder="Part Number" type="text" name="partNum">
+            </fieldset>
+        </div>
+        <div>
+            <fieldset>
+                <textarea placeholder="Part Description" name="description"></textarea>
+            </fieldset>
+        </div>
+        <div>
+            <fieldset>
+                <label for="numOnHand">On Hand:</label>
+                <input type="number" name="numOnHand" step="1">
+            </fieldset>
+        </div>
+        <div>
+            <fieldset>
+                <input placeholder="Site (Ship or Wearhouse)" type="text" name="site">
+                <input placeholder="Space" type="text" name="space">
+                <input placeholder="Drawer" type="text" name="drawer">
+            </fieldset>
+        </div>
+
+</form>
+{{end}}

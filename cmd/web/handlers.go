@@ -44,7 +44,7 @@ func (app *application) showItem(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) newItemForm(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Create a new snippet..."))
+	app.render(w, r, "create.page.tmpl", nil)
 }
 func (app *application) newItem(w http.ResponseWriter, r *http.Request) {
 
