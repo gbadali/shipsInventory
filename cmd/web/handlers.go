@@ -5,9 +5,8 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
-	"strings"
-	"unicode/utf8"
 
+	"github.com/gbadali/shipsInventory/pkg/forms"
 	"github.com/gbadali/shipsInventory/pkg/models"
 )
 
@@ -49,7 +48,9 @@ func (app *application) showItem(w http.ResponseWriter, r *http.Request) {
 
 // GET /item/new
 func (app *application) newItemForm(w http.ResponseWriter, r *http.Request) {
-	app.render(w, r, "create.page.tmpl", nil)
+	app.render(w, r, "create.page.tmpl", &templateData{
+		Form: forms.New(nil),
+	})
 }
 
 // POST /item/new
@@ -61,42 +62,30 @@ func (app *application) newItem(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// get the form data and put them in variales
-	itemName := r.PostForm.Get("itemName")
-	partNum := r.PostForm.Get("partNum")
-	description := r.PostForm.Get("description")
-	numOnHand := r.PostForm.Get("numOnHand")
-	site := r.PostForm.Get("site")
-	space := r.PostForm.Get("space")
-	drawer := r.PostForm.Get("drawer")
+	form := forms.New(r.PostForm)
+	form.Required("itemName", "description", "site", "space")
+	form.MaxLength("itemName", 100)
+	form.PermittedValues("site", "RL", "WH")
 
-	errors := make(map[string]string)
-
-	if strings.TrimSpace(itemName) == "" {
-		errors["itemName"] = "This field cannot be blank"
-	} else if utf8.RuneCountInString(itemName) > 100 {
-		errors["itemName"] = "This field is too long (maximum is 100 characters)"
+	if !form.Valid() {
+		app.render(w, r, "create.page.tmpl", &templateData{Form: form})
 	}
 
-	if strings.TrimSpace(description) == "" {
-		errors["content"] = "This field cannot be blank"
-	}
-
-	num, err := strconv.Atoi(numOnHand)
+	num, err := strconv.Atoi(form.Get("numOnHand"))
 	if err != nil {
-		errors["numOnHand"] = "Cannot convert number on hand to int, setting it to 0"
+		form.Errors.Add("numOnHand", "Could not convert Number on Hand to int")
 		num = 0
 	}
 
-	if len(errors) > 0 {
-		app.render(w, r, "create.page.tmpl", &templateData{
-			FormErrors: errors,
-			FormData:   r.PostForm,
-		})
-		return
-	}
-
-	id, err := app.inventory.Insert(itemName, partNum, description, site, space, drawer, num)
+	id, err := app.inventory.Insert(
+		form.Get("itemName"),
+		form.Get("partNum"),
+		form.Get("description"),
+		form.Get("site"),
+		form.Get("space"),
+		form.Get("drawer"),
+		num,
+	)
 	if err != nil {
 		app.serverError(w, err)
 		return

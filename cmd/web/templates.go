@@ -2,10 +2,10 @@ package main
 
 import (
 	"html/template"
-	"net/url"
 	"path/filepath"
 	"time"
 
+	"github.com/gbadali/shipsInventory/pkg/forms"
 	"github.com/gbadali/shipsInventory/pkg/models"
 )
 
@@ -13,8 +13,7 @@ import (
 // the template so we agregate it here.
 type templateData struct {
 	CurrentYear int
-	FormData    url.Values
-	FormErrors  map[string]string
+	Form        *forms.Form
 	Item        *models.Item
 	Items       []*models.Item
 }
