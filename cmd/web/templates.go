@@ -2,6 +2,7 @@ package main
 
 import (
 	"html/template"
+	"net/url"
 	"path/filepath"
 	"time"
 
@@ -12,11 +13,14 @@ import (
 // the template so we agregate it here.
 type templateData struct {
 	CurrentYear int
+	FormData    url.Values
+	FormErrors  map[string]string
 	Item        *models.Item
 	Items       []*models.Item
 }
 
 func newTemplateCache(dir string) (map[string]*template.Template, error) {
+
 	cache := map[string]*template.Template{}
 
 	pages, err := filepath.Glob(filepath.Join(dir, "*.page.tmpl"))
@@ -27,9 +31,10 @@ func newTemplateCache(dir string) (map[string]*template.Template, error) {
 	for _, page := range pages {
 		name := filepath.Base(page)
 
-		// here we parse the template files as well as add the functions we define
-		// below so the templates know about the functions.  template.New creates a
-		// new empty template set, then Funcs() registers the FuncMap and then we parse.
+		// The template.FuncMap must be registered with the template set before you
+		// call the ParseFiles() method. This means we have to use template.New() to
+		// create an empty template set, use the Funcs() method to register the
+		// template.FuncMap, and then parse the file as normal.
 		ts, err := template.New(name).Funcs(functions).ParseFiles(page)
 		if err != nil {
 			return nil, err
@@ -47,6 +52,7 @@ func newTemplateCache(dir string) (map[string]*template.Template, error) {
 
 		cache[name] = ts
 	}
+
 	return cache, nil
 }
 

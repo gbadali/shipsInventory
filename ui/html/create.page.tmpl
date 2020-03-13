@@ -7,29 +7,40 @@
     <fieldset>
         <div>
             <fieldset>
-                <input placeholder="Part Name" type="text" name="itemName">
-            </fieldset>
-            <fieldset>
-                <input placeholder="Part Number" type="text" name="partNum">
-            </fieldset>
-        </div>
-        <div>
-            <fieldset>
-                <textarea placeholder="Part Description" name="description"></textarea>
-            </fieldset>
-        </div>
-        <div>
-            <fieldset>
-                <input placeholder="Number on Hand" type="number" name="numOnHand" step="1">
-            </fieldset>
-        </div>
-        <div>
-            <fieldset>
-                <input placeholder="Site (Ship or Wearhouse)" type="text" name="site">
-                <input placeholder="Space" type="text" name="space">
-                <input placeholder="Drawer" type="text" name="drawer">
-            </fieldset>
-        </div>
+                {{with .FormErrors.itemName}}
+                <label class="error">{{.}}</label>
+                {{end}}
+                <input placeholder="Part Name" type="text" name="itemName" value='{{.FormData.Get "itemName"}}'>
 
+            </fieldset>
+            <fieldset>
+                <input placeholder="Part Number" type="text" name="partNum" value='{{.FormData.Get "partNum"}}'>
+            </fieldset>
+        </div>
+        <div>
+            <fieldset>
+                <textarea placeholder="Part Description" name="description"
+                    value='{{.FormData.Get "description"}}'></textarea>
+            </fieldset>
+        </div>
+        <div>
+            <fieldset>
+                {{with .FormErrors.numOnHand}}
+                <label class="error">{{.}}</label>
+                {{end}}
+                <input placeholder="Number on Hand" type="number" name="numOnHand" step="1"
+                    value=' {{.FormData.Get "numOnHand"}}'>
+            </fieldset>
+        </div>
+        <div>
+            <fieldset>
+                <input placeholder="Site (Ship or Wearhouse)" type="text" name="site" value='{{.FormData.Get "site"}}'>
+                <input placeholder="Space" type="text" name="space" value='{{.FormData.Get "space"}}'>
+                <input placeholder="Drawer" type="text" name="drawer" value='{{.FormData.Get "drawer"}}'>
+            </fieldset>
+        </div>
+        <div>
+            <input type="submit" value="Add Item">
+        </div>
 </form>
 {{end}}

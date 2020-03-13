@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
+	"strings"
+	"unicode/utf8"
 
 	"github.com/gbadali/shipsInventory/pkg/models"
 )
@@ -52,12 +54,14 @@ func (app *application) newItemForm(w http.ResponseWriter, r *http.Request) {
 
 // POST /item/new
 func (app *application) newItem(w http.ResponseWriter, r *http.Request) {
+	// parse the form data
 	err := r.ParseForm()
 	if err != nil {
 		app.clientError(w, http.StatusBadRequest)
 		return
 	}
 
+	// get the form data and put them in variales
 	itemName := r.PostForm.Get("itemName")
 	partNum := r.PostForm.Get("partNum")
 	description := r.PostForm.Get("description")
@@ -66,9 +70,29 @@ func (app *application) newItem(w http.ResponseWriter, r *http.Request) {
 	space := r.PostForm.Get("space")
 	drawer := r.PostForm.Get("drawer")
 
+	errors := make(map[string]string)
+
+	if strings.TrimSpace(itemName) == "" {
+		errors["itemName"] = "This field cannot be blank"
+	} else if utf8.RuneCountInString(itemName) > 100 {
+		errors["itemName"] = "This field is too long (maximum is 100 characters)"
+	}
+
+	if strings.TrimSpace(description) == "" {
+		errors["content"] = "This field cannot be blank"
+	}
+
 	num, err := strconv.Atoi(numOnHand)
 	if err != nil {
-		app.clientError(w, http.StatusTeapot)
+		errors["numOnHand"] = "Cannot convert number on hand to int, setting it to 0"
+		num = 0
+	}
+
+	if len(errors) > 0 {
+		app.render(w, r, "create.page.tmpl", &templateData{
+			FormErrors: errors,
+			FormData:   r.PostForm,
+		})
 		return
 	}
 
@@ -78,5 +102,5 @@ func (app *application) newItem(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	http.Redirect(w, r, fmt.Sprintf("/item/:%d", id), http.StatusSeeOther)
+	http.Redirect(w, r, fmt.Sprintf("/item/%d", id), http.StatusSeeOther)
 }
