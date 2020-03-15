@@ -94,3 +94,28 @@ func (app *application) newItem(w http.ResponseWriter, r *http.Request) {
 
 	http.Redirect(w, r, fmt.Sprintf("/item/%d", id), http.StatusSeeOther)
 }
+
+// GET /user/signup
+func (app *application) signupUserForm(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintln(w, "Display the user signup form...")
+}
+
+// POST /user/signup
+func (app *application) signupUser(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintln(w, "Create a new user")
+}
+
+// GET /user/login
+func (app *application) loginUserForm(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintln(w, "Display the user login form...")
+}
+
+// POST /user/login
+func (app *application) loginUser(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintln(w, "Authenticate and login the user")
+}
+
+// POST /user/logout
+func (app *application) logoutUser(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintln(w, "Logout the user")
+}
