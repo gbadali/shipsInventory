@@ -90,6 +90,7 @@ func (app *application) newItem(w http.ResponseWriter, r *http.Request) {
 		app.serverError(w, err)
 		return
 	}
+	app.session.Put(r, "flash", "Item succesfully added to the inventory")
 
 	http.Redirect(w, r, fmt.Sprintf("/item/%d", id), http.StatusSeeOther)
 }

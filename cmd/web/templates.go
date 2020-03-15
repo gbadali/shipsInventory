@@ -13,6 +13,7 @@ import (
 // the template so we agregate it here.
 type templateData struct {
 	CurrentYear int
+	Flash       string
 	Form        *forms.Form
 	Item        *models.Item
 	Items       []*models.Item
