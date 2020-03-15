@@ -11,12 +11,14 @@ func (app *application) routes() http.Handler {
 	// create a middleware chain
 	standardMiddleware := alice.New(app.recoverPanic, app.logRequest, secureHeaders)
 
+	dynamicMiddleware := alice.New(app.session.Enable)
+
 	// make a new mux
 	mux := pat.New()
-	mux.Get("/", http.HandlerFunc(app.home))
-	mux.Get("/item/new", http.HandlerFunc(app.newItemForm))
-	mux.Post("/item/new", http.HandlerFunc(app.newItem))
-	mux.Get("/item/:id", http.HandlerFunc(app.showItem))
+	mux.Get("/", dynamicMiddleware.ThenFunc(app.home))
+	mux.Get("/item/new", dynamicMiddleware.ThenFunc(app.newItemForm))
+	mux.Post("/item/new", dynamicMiddleware.ThenFunc(app.newItem))
+	mux.Get("/item/:id", dynamicMiddleware.ThenFunc(app.showItem))
 
 	// serve the staic files for css and js
 	fileServer := http.FileServer(http.Dir("./ui/static/"))
