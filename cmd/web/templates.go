@@ -12,11 +12,12 @@ import (
 // TemplateData is here because we can only pass one struct into
 // the template so we agregate it here.
 type templateData struct {
-	CurrentYear int
-	Flash       string
-	Form        *forms.Form
-	Item        *models.Item
-	Items       []*models.Item
+	CurrentYear     int
+	Flash           string
+	Form            *forms.Form
+	IsAuthenticated bool
+	Item            *models.Item
+	Items           []*models.Item
 }
 
 func newTemplateCache(dir string) (map[string]*template.Template, error) {
