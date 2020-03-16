@@ -12,6 +12,7 @@ import (
 // TemplateData is here because we can only pass one struct into
 // the template so we agregate it here.
 type templateData struct {
+	CSRFToken       string
 	CurrentYear     int
 	Flash           string
 	Form            *forms.Form

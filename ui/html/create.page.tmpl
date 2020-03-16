@@ -4,8 +4,8 @@
 
 {{define "main"}}
 <form action="/item/new" method="POST">
-    {{with .Form}}
-    <fieldset>
+    <input type="hidden" name="csrf_token" value='{{.CSRFToken}}'>
+    {{with .Form}} <fieldset>
         <div>
             <fieldset>
                 {{with .Errors.Get "itemName"}}

@@ -6,6 +6,8 @@ import (
 	"net/http"
 	"runtime/debug"
 	"time"
+
+	"github.com/justinas/nosurf"
 )
 
 // write an error and a stack trace to the error log
@@ -50,11 +52,13 @@ func (app *application) render(w http.ResponseWriter, r *http.Request, name stri
 }
 
 // addDefaultData takes in a pointer to the templateData struct and adds some
-// default things
+// default things so we can display them in forms and such
 func (app *application) addDefaultData(td *templateData, r *http.Request) *templateData {
 	if td == nil {
 		td = &templateData{}
 	}
+
+	td.CSRFToken = nosurf.Token(r)
 	td.CurrentYear = time.Now().Year()
 	td.Flash = app.session.PopString(r, "flash")
 	td.IsAuthenticated = app.isAuthenticated(r)
