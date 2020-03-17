@@ -2,7 +2,7 @@
 A simple inventory for use aboard ships.
 
 
-Inventory table looks like this
+```Inventory table looks like this
 +---------------+--------------+------+-----+---------+----------------+
 | Field         | Type         | Null | Key | Default | Extra          |
 +---------------+--------------+------+-----+---------+----------------+
@@ -17,4 +17,4 @@ Inventory table looks like this
 | site          | varchar(100) | YES  |     | NULL    |                |
 | space         | varchar(100) | YES  |     | NULL    |                |
 | drawer        | varchar(100) | YES  |     | NULL    |                |
-+---------------+--------------+------+-----+---------+----------------+
++---------------+--------------+------+-----+---------+----------------+```
