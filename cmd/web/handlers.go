@@ -174,3 +174,8 @@ func (app *application) logoutUser(w http.ResponseWriter, r *http.Request) {
 	app.session.Put(r, "flash", "You've been loged out successfully!")
 	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
+
+// just for testing
+func ping(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("OK"))
+}
