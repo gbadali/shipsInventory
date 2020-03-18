@@ -10,11 +10,11 @@ import (
 	"os"
 	"time"
 
-	"github.com/golangcollege/sessions"
-
+	"github.com/gbadali/shipsInventory/pkg/models"
 	"github.com/gbadali/shipsInventory/pkg/models/mysql"
 
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/golangcollege/sessions"
 )
 
 type contextKey string
@@ -22,12 +22,20 @@ type contextKey string
 const contextKeyIsAuthenticated = contextKey("isAuthenticated")
 
 type application struct {
-	errorLog      *log.Logger
-	infoLog       *log.Logger
-	session       *sessions.Session
-	inventory     *mysql.InventoryModel
+	errorLog  *log.Logger
+	infoLog   *log.Logger
+	session   *sessions.Session
+	inventory interface {
+		Insert(string, string, string, string, string, string, int) (int, error)
+		Get(int) (*models.Item, error)
+		Oldest() ([]*models.Item, error)
+	}
 	templateCache map[string]*template.Template
-	users         *mysql.UserModel
+	users         interface {
+		Insert(string, string, string) error
+		Authenticate(string, string) (int, error)
+		Get(int) (*models.User, error)
+	}
 }
 
 func main() {
