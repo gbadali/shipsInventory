@@ -26,7 +26,6 @@ func (m *InventoryModel) Insert(itemName, partNum, description, site, space, dra
 	return 2, nil
 }
 
-
 func (m *InventoryModel) Get(id int) (*models.Item, error) {
 	switch id {
 	case 1:
@@ -36,6 +35,6 @@ func (m *InventoryModel) Get(id int) (*models.Item, error) {
 	}
 }
 
-
 func (m *InventoryModel) Oldest() ([]*models.Item, error) {
 	return []*models.Item{mockItem}, nil
+}

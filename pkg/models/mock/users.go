@@ -14,7 +14,7 @@ var mockUser = &models.User{
 	Active:  true,
 }
 
-type userModel struct{}
+type UserModel struct{}
 
 func (m *UserModel) Insert(name, email, password string) error {
 	switch email {

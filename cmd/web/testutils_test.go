@@ -11,7 +11,7 @@ import (
 
 	"github.com/golangcollege/sessions"
 
-	"github.com/gbadali/shipsinventory/pkg/models/mock"
+	"github.com/gbadali/shipsInventory/pkg/models/mock"
 )
 
 func newTestApplication(t *testing.T) *application {
@@ -28,7 +28,7 @@ func newTestApplication(t *testing.T) *application {
 		errorLog:      log.New(ioutil.Discard, "", 0),
 		infoLog:       log.New(ioutil.Discard, "", 0),
 		session:       session,
-		inventory:     &mock.ItemModel{},
+		inventory:     &mock.InventoryModel{},
 		templateCache: templateCache,
 		users:         &mock.UserModel{},
 	}
