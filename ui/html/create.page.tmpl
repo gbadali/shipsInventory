@@ -4,7 +4,7 @@
 
 {{define "main"}}
 <form action="/item/new" method="POST">
-    <input type="hidden" name="csrf_token" value='{{.CSRFToken}}'>
+    <input type='hidden' name='csrf_token' value='{{.CSRFToken}}'>
     {{with .Form}} <fieldset>
         <div>
             <fieldset>
